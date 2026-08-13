@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mallory Odom — Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#060a14;
+    --bg-nebula-a:#1b2a4a;
+    --bg-nebula-b:#2a1b46;
+    --star-dim:#4a5578;
+    --star-bg:#8b93ae;
+    --gold:#f0b94d;
+    --gold-soft:rgba(240,185,77,0.35);
+    --text-primary:#edeff7;
+    --text-secondary:#9aa3c0;
+    --overlay-bg:#0d1424;
+    --line-dim:rgba(74,85,120,0.55);
+    --line-gold:rgba(240,185,77,0.85);
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--bg-deep);
+    color:var(--text-primary);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  body{
+    position:relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 22% 15%, rgba(27,42,74,0.55), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 82% 78%, rgba(42,27,70,0.45), transparent 60%),
+      var(--bg-deep);
+  }
+
+  .bg-stars{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1000px;
+    margin:0 auto;
+    padding:64px 24px 96px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 18px;
+    font-weight:600;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(38px, 6vw, 64px);
+    line-height:1.05;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+
+  .tagline{
+    font-size:17px;
+    color:var(--text-secondary);
+    max-width:560px;
+    margin:0 0 6px;
+    line-height:1.55;
+  }
+
+  .built-for{
+    font-size:13px;
+    color:var(--star-dim);
+    margin:0 0 44px;
+    font-style:italic;
+  }
+
+  .stage{
+    position:relative;
+    width:100%;
+    max-width:920px;
+    aspect-ratio:900/520;
+  }
+
+  .stage svg{
+    width:100%;
+    height:100%;
+    overflow:visible;
+  }
+
+  .constellation-line{
+    stroke-linecap:round;
+    fill:none;
+  }
+
+  .star-dot{
+    cursor:default;
+  }
+
+  .star-dot.interactive{
+    cursor:pointer;
+  }
+
+  .star-core{
+    transition:r 0.2s ease, filter 0.2s ease;
+  }
+
+  .star-dot.interactive:hover .star-core,
+  .star-dot.interactive:focus .star-core,
+  .star-dot.interactive.active .star-core{
+    filter:drop-shadow(0 0 10px var(--gold-soft));
+  }
+
+  .star-dot.interactive:focus{
+    outline:none;
+  }
+
+  .star-dot.interactive:focus-visible .star-core{
+    filter:drop-shadow(0 0 0 3px var(--gold));
+  }
+
+  .star-pulse{
+    animation:pulse 3.2s ease-in-out infinite;
+    transform-origin:center;
+  }
+
+  @keyframes pulse{
+    0%,100%{ opacity:0.35; r:11; }
+    50%{ opacity:0.05; r:16; }
+  }
+
+  .star-core.pulsing{
+    animation:corePulse 3.2s ease-in-out infinite;
+    transform-origin:center;
+  }
+
+  @keyframes corePulse{
+    0%,100%{ r:7; opacity:1; }
+    50%{ r:8.3; opacity:0.82; }
+  }
+
+  .back-link{
+    position:fixed;
+    top:22px;
+    left:24px;
+    z-index:5;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    color:var(--text-secondary);
+    text-decoration:none;
+    padding:8px 14px 8px 10px;
+    border-radius:100px;
+    border:1px solid rgba(154,163,192,0.2);
+    background:rgba(6,10,20,0.4);
+    backdrop-filter:blur(4px);
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .back-link:hover, .back-link:focus-visible{
+    color:var(--gold);
+    border-color:var(--gold);
+  }
+
+  .back-link svg{
+    width:14px;
+    height:14px;
+    flex-shrink:0;
+  }
+
+  @media (max-width:600px){
+    .back-link{ top:14px; left:14px; font-size:12px; padding:7px 12px 7px 9px; }
+  }
+
+  .hint{
+    margin-top:28px;
+    font-size:13px;
+    color:var(--star-dim);
+    letter-spacing:0.02em;
+  }
+
+  .hint strong{ color:var(--text-secondary); font-weight:500; }
+
+  .overlay-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(3,5,10,0.72);
+    backdrop-filter:blur(3px);
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.25s ease;
+    padding:20px;
+  }
+
+  .overlay-backdrop.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .card{
+    background:var(--overlay-bg);
+    border:1px solid rgba(240,185,77,0.25);
+    border-radius:14px;
+    max-width:460px;
+    width:100%;
+    padding:32px 30px 28px;
+    box-shadow:0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,185,77,0.05);
+    transform:translateY(14px) scale(0.98);
+    transition:transform 0.28s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .overlay-backdrop.show .card{
+    transform:translateY(0) scale(1);
+  }
+
+  .card-index{
+    font-family:'Fraunces', serif;
+    font-size:13px;
+    color:var(--gold);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin:0 0 12px;
+  }
+
+  .card-need{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:23px;
+    line-height:1.3;
+    margin:0 0 16px;
+    color:var(--text-primary);
+  }
+
+  .card-proof{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--text-secondary);
+    margin:0 0 24px;
+  }
+
+  .card-close{
+    background:none;
+    border:1px solid rgba(154,163,192,0.3);
+    color:var(--text-secondary);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    padding:8px 18px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .card-close:hover, .card-close:focus-visible{
+    border-color:var(--gold);
+    color:var(--gold);
+  }
+
+  footer{
+    position:relative;
+    z-index:1;
+    max-width:600px;
+    margin:0 auto;
+    padding:0 24px 72px;
+    text-align:center;
+  }
+
+  footer p{
+    font-size:14px;
+    line-height:1.7;
+    color:var(--text-secondary);
+    font-style:italic;
+  }
+
+  .contact{
+    margin-top:28px;
+    font-size:13px;
+    color:var(--star-dim);
+  }
+
+  .contact a{
+    color:var(--text-secondary);
+    text-decoration:none;
+    border-bottom:1px solid rgba(154,163,192,0.3);
+  }
+
+  .contact a:hover{ color:var(--gold); border-color:var(--gold); }
+
+  @media (prefers-reduced-motion: reduce){
+    .star-pulse{ animation:none; opacity:0.18; }
+    .star-core.pulsing{ animation:none; }
+    .card, .overlay-backdrop{ transition:none; }
+  }
+
+  @media (max-width:600px){
+    .wrap{ padding:44px 18px 64px; }
+    .hint{ padding:0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas class="bg-stars" id="bgStars" aria-hidden="true"></canvas>
+
+<a class="back-link" href="https://modom1123.github.io/portfolio/">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+  Back to portfolio
+</a>
+
+<div class="wrap">
+  <p class="eyebrow">Product Manager</p>
+  <h1>Mallory Odom</h1>
+  <p class="tagline">Nine-plus years connecting the dots across OEMs, dealers, engineering, and leadership.</p>
+  <p class="built-for">Six stars below, mapped to what I read between the lines of the ASPEN role.</p>
+
+  <div class="stage">
+    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A constellation of stars forming the letters M and O. Six brighter stars are interactive.">
+      <g id="lines"></g>
+      <g id="stars"></g>
+    </svg>
+  </div>
+
+  <p class="hint">Click a <strong>gold star</strong> to see how I've navigated it before.</p>
+</div>
+
+<footer>
+  <p>"I've spent my career learning how the pieces of a system connect — dealers, OEMs, engineering, leadership. Constellation just made the metaphor obvious."</p>
+  <div class="contact">
+    Portland, OR &nbsp;·&nbsp; <a href="mailto:modom87@gmail.com">modom87@gmail.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/malloryodom" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</footer>
+
+<div class="overlay-backdrop" id="backdrop">
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="cardNeed">
+    <p class="card-index" id="cardIndex">Star 1 of 6</p>
+    <h2 class="card-need" id="cardNeed"></h2>
+    <p class="card-proof" id="cardProof"></p>
+    <button class="card-close" id="cardClose">Close</button>
+  </div>
+</div>
+
+<script>
+// ---------- Data: 6 interactive stars, mapped to ASPEN's between-the-lines needs ----------
+const points = [
+  // M shape
+  { id:'m1', x:140, y:400, interactive:true,  need:'Releases are breaking trust — need predictability', proof:'At Leadventure, I ran backlog prioritization with WSJF against real engineering capacity — visible tradeoffs, no surprise releases, across a $30M product line.' },
+  { id:'m2', x:140, y:140, interactive:false },
+  { id:'m3', x:260, y:320, interactive:true,  need:'No real product function exists yet', proof:'I\u2019ve built the function from zero twice — sole PM at Leadventure with no prior product role to inherit, then first experienced PM on a nominal "product" team at IMPLAN, setting the 3-year roadmap directly with the CEO.' },
+  { id:'m4', x:380, y:140, interactive:false },
+  { id:'m5', x:380, y:400, interactive:true,  need:'Manufacturer partnerships need to land on time', proof:'I managed BMW/MINI OEM relationships across 450+ national service providers at DataClover, translating between engineering, clients, and leadership to keep delivery on track.' },
+  // O shape
+  { id:'o1', x:770, y:270, interactive:false },
+  { id:'o2', x:729, y:369, interactive:true,  need:'Legacy tech, actively modernizing toward the cloud', proof:'I led the 0-to-1 build of a Tealium CDP at Leadventure — negotiated the partnership, then took it from legacy reporting to a unified, modern data layer.' },
+  { id:'o3', x:630, y:410, interactive:false },
+  { id:'o4', x:531, y:369, interactive:true,  need:'Lean, resource-constrained team', proof:"I run LFTR solo — product strategy, build, and launch, with no team to hand things off to. I know how to move a roadmap forward alone." },
+  { id:'o5', x:490, y:270, interactive:false },
+  { id:'o6', x:531, y:171, interactive:true,  need:'Needs someone who pushes things through', proof:'At Leadventure, I unified siloed product lines against real organizational resistance, delivering $2M in cost savings along the way.' },
+  { id:'o7', x:630, y:130, interactive:false },
+  { id:'o8', x:729, y:171, interactive:false },
+];
+
+const mChain = ['m1','m2','m3','m4','m5'];
+const oChain = ['o1','o2','o3','o4','o5','o6','o7','o8','o1'];
+
+const bySize = id => points.find(p => p.id === id);
+
+const linesSvg = document.getElementById('lines');
+const starsSvg = document.getElementById('stars');
+
+function drawChain(chain, dashed){
+  for(let i=0;i<chain.length-1;i++){
+    const a = bySize(chain[i]);
+    const b = bySize(chain[i+1]);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+    line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+    line.setAttribute('class','constellation-line');
+    line.setAttribute('stroke', 'var(--line-dim)');
+    line.setAttribute('stroke-width', '1.25');
+    linesSvg.appendChild(line);
+  }
+}
+drawChain(mChain);
+drawChain(oChain);
+
+let activeCount = 0;
+const visited = new Set();
+
+points.forEach((p, idx) => {
+  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('class', 'star-dot' + (p.interactive ? ' interactive' : ''));
+  g.setAttribute('transform', `translate(${p.x},${p.y})`);
+
+  if(p.interactive){
+    const pulse = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    pulse.setAttribute('class','star-pulse');
+    pulse.setAttribute('r','11');
+    pulse.setAttribute('fill','var(--gold)');
+    g.appendChild(pulse);
+  }
+
+  const core = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  core.setAttribute('class','star-core' + (p.interactive ? ' pulsing' : ''));
+  core.setAttribute('r', p.interactive ? '7' : '3.5');
+  core.setAttribute('fill', p.interactive ? 'var(--gold)' : 'var(--star-dim)');
+  g.appendChild(core);
+
+  if(p.interactive){
+    g.setAttribute('tabindex','0');
+    g.setAttribute('role','button');
+    g.setAttribute('aria-label', p.need);
+    const open = () => openCard(p, g);
+    g.addEventListener('click', open);
+    g.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); }
+    });
+  }
+
+  starsSvg.appendChild(g);
+  p._el = g;
+});
+
+const interactiveOrder = points.filter(p => p.interactive);
+
+function openCard(p, el){
+  document.querySelectorAll('.star-dot.active').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  const idx = interactiveOrder.findIndex(x => x.id === p.id) + 1;
+  document.getElementById('cardIndex').textContent = `Star ${idx} of ${interactiveOrder.length}`;
+  document.getElementById('cardNeed').textContent = p.need;
+  document.getElementById('cardProof').textContent = p.proof;
+  const backdrop = document.getElementById('backdrop');
+  backdrop.classList.add('show');
+  document.getElementById('cardClose').focus();
+}
+
+function closeCard(){
+  document.getElementById('backdrop').classList.remove('show');
+  document.querySelectorAll('.star-dot.active').forEach(n => n.classList.remove('active'));
+}
+
+document.getElementById('cardClose').addEventListener('click', closeCard);
+document.getElementById('backdrop').addEventListener('click', (e) => {
+  if(e.target.id === 'backdrop') closeCard();
+});
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') closeCard();
+});
+
+// ---------- Ambient background starfield ----------
+const canvas = document.getElementById('bgStars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize(){
+  canvas.width = window.innerWidth * devicePixelRatio;
+  canvas.height = window.innerHeight * devicePixelRatio;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  const count = Math.floor((window.innerWidth * window.innerHeight) / 9000);
+  stars = Array.from({length: count}, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.1 + 0.3,
+    baseAlpha: Math.random() * 0.5 + 0.15,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.4 + 0.15,
+  }));
+}
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function draw(t){
+  ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+  stars.forEach(s => {
+    const alpha = prefersReducedMotion ? s.baseAlpha : s.baseAlpha + Math.sin(t*0.001*s.speed + s.phase) * 0.15;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(139,147,174,${Math.max(0, alpha)})`;
+    ctx.fill();
+  });
+  if(!prefersReducedMotion){
+    requestAnimationFrame(draw);
+  }
+}
+
+window.addEventListener('resize', resize);
+resize();
+if(prefersReducedMotion){
+  draw(0);
+} else {
+  requestAnimationFrame(draw);
+}
+</script>
+
+</body>
+</html>
